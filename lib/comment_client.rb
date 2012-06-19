@@ -12,6 +12,10 @@ module CommentClient
       @@service_host = host
     end
 
+    def service_host
+      @@service_host
+    end
+
     def comments_for(commentable)
       response = RestClient.get(url_top_level_comments(commentable)){|response, request, result| response }
       if response.code == 200
