@@ -13,7 +13,7 @@ module CommentClient
     end
 
     def comments_for(commentable)
-      response = RestClient.get(url_top_level_comments(commentable))
+      response = RestClient.get(url_top_level_comments(commentable)){|response, request, result| response }
       if response.code == 200
         parse(response.body)
       else
@@ -22,37 +22,37 @@ module CommentClient
     end
 
     def delete_thread(commentable)
-      response = RestClient.delete(url_for_commentable(commentable))
+      response = RestClient.delete(url_for_commentable(commentable)){|response, request, result| response }
       process_error(response)
     end
 
     def add_comment(commentable, comment_hash)
-      response = RestClient.post(url_top_level_comments(commentable), comment_hash)
+      response = RestClient.post(url_top_level_comments(commentable), comment_hash){|response, request, result| response }
       process_error(response)
     end
     
     def reply_to(comment_id, comment_hash)
-      response = RestClient.post(url_for_comment(comment_id), comment_hash)
+      response = RestClient.post(url_for_comment(comment_id), comment_hash){|response, request, result| response }
       process_error(response)
     end
 
     def update_comment(comment_id, comment_hash)
-      response = RestClient.put(url_for_comment(comment_id), comment_hash)
+      response = RestClient.put(url_for_comment(comment_id), comment_hash){|response, request, result| response }
       process_error(response)
     end
 
     def delete_comment(comment_id)
-      response = RestClient.delete(url_for_comment(comment_id))
+      response = RestClient.delete(url_for_comment(comment_id)){|response, request, result| response }
       process_error(response)  
     end
 
     def vote_comment(comment_id, user_id, vote)
-      response = RestClient.put(url_for_vote(comment_id, user_id, ), vote)
+      response = RestClient.put(url_for_vote(comment_id, user_id), vote){|response, request, result| response }
       process_error(response)
     end
 
     def unvote_comment(comment_id, user_id)
-      response = RestClient.delete(url_for_vote(comment_id, user_id))
+      response = RestClient.delete(url_for_vote(comment_id, user_id)){|response, request, result| response }
       process_error(response)
     end
 

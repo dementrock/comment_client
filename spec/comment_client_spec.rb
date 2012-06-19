@@ -12,19 +12,28 @@ describe "CommentClient" do
     comment2 = Yajl::Parser.parse(comment2.body)["comment"]
     sub_comment1 = RestClient.post "#{api_base_url}/comments/#{comment1["id"]}", :body => "comment body", :title => "comment title 0", :user_id => 1, :course_id => 1
     sub_comment2 = RestClient.post "#{api_base_url}/comments/#{comment2["id"]}", :body => "comment body", :title => "comment title 1", :user_id => 1, :course_id => 1
+
+    RestClient.put "#{api_base_url}/votes/comments/#{comment1["id"]}/users/1", :value => "up"
+    RestClient.put "#{api_base_url}/votes/comments/#{comment1["id"]}/users/2", :value => "up"
+    RestClient.put "#{api_base_url}/votes/comments/#{comment1["id"]}/users/3", :value => "down"
+    RestClient.put "#{api_base_url}/votes/comments/#{comment1["id"]}/users/4", :value => "down"
+    RestClient.put "#{api_base_url}/votes/comments/#{comment1["id"]}/users/5", :value => "down"
   end
 
   describe "#comments_for(commentable)" do
-    it "should get all comments associated with the commentable object" do
+    it "should get all comments and their votes associated with the commentable object" do
       question = Question.first
       comments = CommentClient.comments_for(question)
       comments.length.should == 2
-      comment1, comment2 = comments
+      comment1 = comments.reject{|comment| comment["title"] != "top 0"}.first
+      comment2 = comments.reject{|comment| comment["title"] != "top 1"}.first
       comment1["body"].should == "top comment"
-      comment1["title"].should == "top 0"
-      comment2["title"].should == "top 1"
+      comment1["votes"]["up"].should == 2
+      comment1["votes"]["down"].should == 3
       comment1["children"].length.should == 1
       comment2["children"].length.should == 1
+      comment2["votes"]["up"].should == 0
+      comment2["votes"]["down"].should == 0
       comment2["children"].first["title"].should == "comment title 1"
     end
   end
@@ -81,13 +90,54 @@ describe "CommentClient" do
     end
   end
 
-  describe "#vote_comment(vote, comment_id)" do
-    it "votes on the comment" do
+  describe "#vote_comment(comment_id, user_id, vote)" do
+    it "votes up on the comment" do
+      question = Question.first
+      comment = CommentClient.comments_for(question).reject{|comment| comment["votes"]["up"] == 0}.first
+      errors = CommentClient.vote_comment(comment["id"], 6, :value => "up")
+      errors.should be_nil
+      comment = CommentClient.comments_for(question).reject{|comment| comment["votes"]["up"] == 0}.first
+      comment["votes"]["up"].should == 3
+    end
+    it "votes down on the comment" do
+      question = Question.first
+      comment = CommentClient.comments_for(question).reject{|comment| comment["votes"]["up"] == 0}.first
+      errors = CommentClient.vote_comment(comment["id"], 6, :value => "down")
+      errors.should be_nil
+      comment = CommentClient.comments_for(question).reject{|comment| comment["votes"]["up"] == 0}.first
+      comment["votes"]["down"].should == 4
+    end
+    it "updates previous vote" do
+      question = Question.first
+      comment = CommentClient.comments_for(question).reject{|comment| comment["votes"]["up"] == 0}.first
+      errors = CommentClient.vote_comment(comment["id"], 4, :value => "up")
+      errors.should be_nil
+      comment = CommentClient.comments_for(question).reject{|comment| comment["votes"]["up"] == 0}.first
+      comment["votes"]["up"].should == 3
+      comment["votes"]["down"].should == 2
+    end
+    it "rejects invalid vote value" do
+      question = Question.first
+      comment = CommentClient.comments_for(question).reject{|comment| comment["votes"]["up"] == 0}.first
+      errors = CommentClient.vote_comment(comment["id"], 6, :value => "up_or_down")
+      errors.should_not be_nil
     end
   end
 
-  describe "#unvote_comment(comment_id)" do
+  describe "#unvote_comment(comment_id, user_id)" do
     it "unvotes on the comment" do
+      question = Question.first
+      comment = CommentClient.comments_for(question).reject{|comment| comment["votes"]["up"] == 0}.first
+      errors = CommentClient.unvote_comment(comment["id"], 4)
+      errors.should be_nil
+      comment = CommentClient.comments_for(question).reject{|comment| comment["votes"]["up"] == 0}.first
+      comment["votes"]["down"].should == 2
+    end
+    it "rejects nonexisting vote" do
+      question = Question.first
+      comment = CommentClient.comments_for(question).reject{|comment| comment["votes"]["up"] == 0}.first
+      errors = CommentClient.unvote_comment(comment["id"], 10)
+      errors.should_not be_nil
     end
   end
 
