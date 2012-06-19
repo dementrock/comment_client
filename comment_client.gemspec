@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Rocky Duan"]
   s.date = "2012-06-19"
-  s.description = "TODO: longer description of your gem"
+  s.description = "client for comment_service as a standalone gem."
   s.email = "dementrock@gmail.com"
   s.extra_rdoc_files = [
     "README.md",
@@ -22,6 +22,8 @@ Gem::Specification.new do |s|
     "README.md",
     "README.rdoc",
     "Rakefile",
+    "VERSION",
+    "comment_client.gemspec",
     "lib/comment_client.rb",
     "spec/comment_client_spec.rb",
     "spec/db/database.yml",
@@ -32,7 +34,7 @@ Gem::Specification.new do |s|
   s.licenses = ["MIT"]
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.10"
-  s.summary = "TODO: one-line summary of your gem"
+  s.summary = "client for comment_service as a standalone gem"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
