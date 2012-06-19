@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "comment_client"
   gem.homepage = "http://github.com/dementrock/comment_client"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = "client for comment_service as a standalone gem"
+  gem.description = "client for comment_service as a standalone gem."
   gem.email = "dementrock@gmail.com"
   gem.authors = ["Rocky Duan"]
   # dependencies defined in Gemfile
