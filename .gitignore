@@ -19,3 +19,4 @@ doc/
 
 Gemfile.lock
 debug.log
+*.db
