@@ -3,7 +3,7 @@ plugin_test_dir = File.dirname(__FILE__)
 $LOAD_PATH.unshift(File.join(plugin_test_dir, '..', 'lib'))
 $LOAD_PATH.unshift(plugin_test_dir)
 require 'rspec'
-require 'acts_as_commentable_with_service'
+require 'comment_client'
 require 'active_record'
 require 'rest_client'
 require 'yajl'
@@ -21,8 +21,5 @@ load(File.join(plugin_test_dir, "db", "schema.rb"))
 # in ./support/ and its subdirectories.
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each {|f| require f}
 
-ActiveRecord::Base.send(:include, Acts::CommentableWithService)
-
 class Question < ActiveRecord::Base
-  acts_as_commentable
 end

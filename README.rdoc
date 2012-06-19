@@ -1,8 +1,8 @@
-= acts_as_commentable_with_service
+= comment_client
 
 Description goes here.
 
-== Contributing to acts_as_commentable_with_service
+== Contributing to comment_client
  
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet.
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it.

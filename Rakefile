@@ -2,7 +2,6 @@
 
 require 'rubygems'
 require 'bundler'
-require 'lib/acts_as_commentable_with_service/version.rb'
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -15,15 +14,13 @@ require 'rake'
 require 'jeweler'
 Jeweler::Tasks.new do |gem|
   # gem is a Gem::Specification... see http://docs.rubygems.org/read/chapter/20 for more options
-  gem.name = "acts_as_commentable_with_service"
-  gem.homepage = "http://github.com/dementrock/acts_as_commentable_with_service"
+  gem.name = "comment_client"
+  gem.homepage = "http://github.com/dementrock/comment_client"
   gem.license = "MIT"
   gem.summary = %Q{TODO: one-line summary of your gem}
   gem.description = %Q{TODO: longer description of your gem}
   gem.email = "dementrock@gmail.com"
   gem.authors = ["Rocky Duan"]
-  gem.version = ActAsCommentableWithService::VERSION
-  gem.files = FileList['lib/**/*.rb', '[A-Z]*', 'spec/**/*'].to_a
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
@@ -46,7 +43,7 @@ Rake::RDocTask.new do |rdoc|
   version = File.exist?('VERSION') ? File.read('VERSION') : ""
 
   rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "acts_as_commentable_with_service #{version}"
+  rdoc.title = "comment_client #{version}"
   rdoc.rdoc_files.include('README*')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
