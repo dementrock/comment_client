@@ -54,6 +54,9 @@ describe "CommentClient" do
       errors.should be_nil
       CommentClient.comments_for(question).length.should == 3
     end
+  end
+
+  describe "#reply_to(comment_id, comment_hash)" do
     it "adds a sub-comment to the comment" do
       question = Question.first
       comments = CommentClient.comments_for(question)
