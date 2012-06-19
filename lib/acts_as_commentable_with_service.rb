@@ -3,6 +3,7 @@ require 'rest_client'
 require 'yajl'
 require File.join(File.expand_path(File.dirname(__FILE__)), 'acts_as_commentable_with_service/singleton_methods')
 require File.join(File.expand_path(File.dirname(__FILE__)), 'acts_as_commentable_with_service/local_instance_methods')
+require File.join(File.expand_path(File.dirname(__FILE__)), 'acts_as_commentable_with_service/exceptions')
 
 module Acts
   module CommentableWithService
@@ -29,8 +30,6 @@ module Acts
         extend Acts::CommentableWithService::SingletonMethods
       end
     end
-
-    
   end
 end
 

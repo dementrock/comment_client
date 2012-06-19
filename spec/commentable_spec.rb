@@ -37,38 +37,59 @@ describe "A class that is commentable" do
     end
   end
 
-  describe "#add_comment(comment)" do
-    it "should add a top-level comment" do
+  describe "#add_comment(comment, parent_id)" do
+    it "adds a top-level comment" do
       question = Question.first
       comment = question.add_comment :body => "top comment", :title => "top 2", :user_id => 1, :course_id => 1
-      comment.errors.should be_nil
+      comment.valid?.should be_true
       question.comments.length.should == 3
     end
-    it "should not add an invalid comment" do
+    it "does not add an invalid comment" do
       question = Question.first
-      comment = question.add_comment :body => "title", :title => "title", :user_id => "invalid", :course_id => "invalid"
-      comemnt.errors.should_not be_nil
+      comment = question.add_comment :body => "title", :title => "title", :user_id => nil, :course_id => nil
+      comment.valid?.should be_false
       question.comments.length.should == 2
     end
-  end
-
-  describe "#reply_to(comment_id, sub_comment)" do
-    it "should add a sub-comment to the comment" do
+    it "adds a sub-comment to the comment" do
       question = Question.first
       comment = question.comments.first
-      sub_comment = question.reply_to(comment.id, :body => "comment body", :title => "comment title 2", :user_id => 1, :course_id => 1)
+      sub_comment = question.add_comment(:body => "comment body", :title => "comment title 2", :user_id => 1, :course_id => 1, comment.id)
       sub_comment.errors.should be_nil
       question.comments.first.children.length.should == 2
     end
   end
 
-  describe "delete_comment(comment_id)" do
-    it "should delete the comment with id comment_id together with its sub-comments" do
+  describe "#update_comment(comment, comment_id)" do
+    it "updates the comment" do
+      question = Question.first
+      comment = question.comments.first
+      question.update_comment(comment.id, :body => "updated")
+      question.comments.collect {|c| c.body}.include?("updated").should be_true
+    end
+    it "raises error when called with invalid attributes" do
+      question = Question.first
+      comment = question.comments.first
+      expect {question.update_comment(comment.id, :id => 100)}.should raise_error
+    end
+  end
+
+  describe "#delete_comment(comment_id)" do
+    it "deletes the comment with id comment_id together with its sub-comments" do
       question = Question.first
       comment = question.comments.first
       question.delete_comment(comment.id)
       question.comments.length.should == 1
     end
   end
-end
 
+  describe "#vote_comment(vote, comment_id)" do
+    it "votes on the comment" do
+    end
+  end
+
+  describe "#unvote_comment(comment_id)" do
+    it "unvotes on the comment" do
+    end
+  end
+
+end
