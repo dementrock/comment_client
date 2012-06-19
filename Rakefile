@@ -2,6 +2,7 @@
 
 require 'rubygems'
 require 'bundler'
+require 'lib/acts_as_commentable_with_service/version.rb'
 begin
   Bundler.setup(:default, :development)
 rescue Bundler::BundlerError => e
@@ -21,6 +22,8 @@ Jeweler::Tasks.new do |gem|
   gem.description = %Q{TODO: longer description of your gem}
   gem.email = "dementrock@gmail.com"
   gem.authors = ["Rocky Duan"]
+  gem.version = ActAsCommentableWithService::VERSION
+  gem.files = FileList['lib/**/*.rb', '[A-Z]*', 'spec/**/*'].to_a
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
