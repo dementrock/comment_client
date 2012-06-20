@@ -1,5 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/spec_helper')
 
+# TODO test for STI base class
 describe "CommentClient" do
   before :each do
     api_base_url = "http://localhost:4567/api/v1"

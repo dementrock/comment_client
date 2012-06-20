@@ -76,8 +76,11 @@ module CommentClient
       "http://#{@@service_host}/api/v1"
     end
 
+    def commentable_type(commentable)
+      (commentable.class.respond_to?(:base_class) ? commentable.class.base_class : commentable.class).to_s.underscore.pluralize
+    end
     def url_for_commentable(commentable)
-      "#{url_prefix}/commentables/#{commentable.class.to_s.underscore.pluralize}/#{commentable.id}"
+      "#{url_prefix}/commentables/#{commentable_type(commentable)}/#{commentable.id}"
     end
 
     def url_top_level_comments(commentable)
